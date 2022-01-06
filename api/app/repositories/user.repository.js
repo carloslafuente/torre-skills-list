@@ -1,5 +1,5 @@
 const UserSchema = require('../schemas/user.schema');
-const { encrypt } = require('../shared/helpers/bcryptPassword.helper');
+const { encrypt, isMatch } = require('../shared/helpers/bcryptPassword.helper');
 const mongoose = require('mongoose');
 
 const getUsers = async () => {
@@ -7,7 +7,7 @@ const getUsers = async () => {
   const users = await userRepository.find({}).select('-password');
   return users;
 };
-  
+
 const postUser = async (user) => {
   const userRepository = mongoose.model('User', UserSchema);
   const createdUser = await new userRepository({
