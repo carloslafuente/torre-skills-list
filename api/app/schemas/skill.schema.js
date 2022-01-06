@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+const Mongoose = require('mongoose');
+
+const { Schema } = Mongoose;
 
 const skillSchema = new Schema({
   name: { type: String, unique: true, required: true },
