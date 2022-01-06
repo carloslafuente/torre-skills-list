@@ -1,14 +1,22 @@
 const { getAllUsers, createUser } = require('../services/user.service');
 
 async function apiGET(req, res) {
-  const users = await getAllUsers();
-  return res.status(200).send({ data: users });
+  try {
+    const users = await getAllUsers();
+    return res.status(200).send({ data: users });
+  } catch (error) {
+    return res.status(500).send({ message: 'Internal Error Server' });
+  }
 }
 
 async function apiPOST(req, res) {
-  const newUser = req.body;
-  const user = await createUser(newUser);
-  return res.status(201).send({ data: user });
+  try {
+    const newUser = req.body;
+    const user = await createUser(newUser);
+    return res.status(201).send({ data: user });
+  } catch (error) {
+    return res.status(500).send({ message: 'Internal Error Server' });
+  }
 }
 
 module.exports = {
