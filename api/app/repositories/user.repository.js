@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const getUsers = async () => {
   const userRepository = mongoose.model('User', UserSchema);
-  const users = await userRepository.find({}).select('-password');
+  const users = await userRepository.find({}).populate('skills').select('-password').exec();
   return users;
 };
 
@@ -13,6 +13,7 @@ const postUser = async (user) => {
   const createdUser = await new userRepository({
     username: user.username,
     password: await encrypt(user.password),
+    skills: user.skills
   }).save();
   createdUser.password = undefined;
   return createdUser;
