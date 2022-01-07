@@ -6,7 +6,7 @@ const loginUser = async (userCredentials) => {
   const token = signJwt(user);
   return {
     username: user.username,
-    token: signJwt(user),
+    token,
   };
 };
 
