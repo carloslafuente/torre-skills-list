@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-md-center">
       <form class="col-4" @submit.prevent="signup()">
-        <h2>Welcome!</h2>
+        <h2>Register new user!</h2>
 
         <div class="form-group">
           <label for="usernameInput">Username</label>
@@ -33,11 +33,18 @@
         <button type="submit" class="btn btn-primary mt-3">Signup</button>
       </form>
     </div>
+
+    <div class="row justify-content-md-center mt-3">
+      <router-link to="/login">login</router-link>
+    </div>
   </div>
 </template>
 
 <script>
 import SkillsList from '../components/SkillsList.vue';
+import { getAllSkills } from '../services/skill.service';
+import { signup, login } from '../services/user.service';
+
 export default {
   name: 'Signup',
   components: {
@@ -54,19 +61,8 @@ export default {
     };
   },
   methods: {
-    getSkills() {
-      const skills = [
-        {
-          _id: '61d78133c036f438389a8901',
-          name: 'frontend',
-          description: 'Frontend developer',
-        },
-        {
-          _id: '61d782a059cf8ab9874c5158',
-          name: 'backend',
-          description: 'Backend developer',
-        },
-      ];
+    async getSkills() {
+      const skills = await getAllSkills();
       this.skills = skills.map((skill) => {
         return {
           ...skill,
@@ -82,12 +78,21 @@ export default {
         (skill) => skill._id !== skillId
       );
     },
-    signup() {
+    async signup() {
       const user = {
         ...this.user,
         skills: this.addedSkills,
       };
-      console.log(user);
+      const createdUser = await signup(user);
+      if (createdUser) {
+        const response = await login({
+          username: user.username,
+          password: user.password,
+        });
+        if (response) {
+          this.$router.push('/');
+        }
+      }
     },
   },
   mounted() {

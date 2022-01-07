@@ -1,17 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <Signup />
+  <Navbar />
+  <router-view />
 </template>
 
 <script>
-import Signup from './pages/Signup.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './components/Navbar.vue';
 
 export default {
   name: 'App',
-  components: {
-    Signup,
-  },
+  components: { Navbar },
 };
 </script>
 
