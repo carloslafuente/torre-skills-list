@@ -5,7 +5,8 @@ async function apiGET(req, res) {
     const skills = await getAllSkills();
     return res.status(200).send({ data: skills });
   } catch (error) {
-    return res.status(500).send({ message: 'Internal Error Server' });
+    console.log(error);
+    return res.status(500).send({ message: error.message });
   }
 }
 
@@ -15,7 +16,8 @@ async function apiPOST(req, res) {
     const skill = await createSkill(newSkill);
     return res.status(201).send({ data: skill });
   } catch (error) {
-    return res.status(500).send({ message: 'Internal Error Server' });
+    console.log(error);
+    return res.status(500).send({ message: error.message });
   }
 }
 

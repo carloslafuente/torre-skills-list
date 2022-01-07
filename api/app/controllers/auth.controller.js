@@ -6,7 +6,8 @@ async function apiPOST(req, res) {
     const token = await loginUser(userCredentials);
     return res.status(201).send({ data: token });
   } catch (error) {
-    return res.status(500).send({ message: 'Internal Error Server' });
+    console.log(error);
+    return res.status(500).send({ message: error.message });
   }
 }
 
