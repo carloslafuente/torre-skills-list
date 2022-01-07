@@ -1,25 +1,41 @@
-const UserSchema = require('../schemas/user.schema');
+const User = require('../schemas/user.schema');
 const { encrypt, isMatch } = require('../shared/helpers/bcryptPassword.helper');
-const mongoose = require('mongoose');
 
 const getUsers = async () => {
-  const userRepository = mongoose.model('User', UserSchema);
-  const users = await userRepository.find({}).select('-password');
+  const userRepository = User;
+  const users = await userRepository
+    .find({})
+    .populate('skills')
+    .select('-password')
+    .exec();
+  return users;
+};
+
+const getUsersBySkill = async (skillId) => {
+  const userRepository = User;
+  const users = await userRepository
+    .find({
+      skills: skillId,
+    })
+    .populate('skills')
+    .select('-password')
+    .exec();
   return users;
 };
 
 const postUser = async (user) => {
-  const userRepository = mongoose.model('User', UserSchema);
+  const userRepository = User;
   const createdUser = await new userRepository({
     username: user.username,
     password: await encrypt(user.password),
+    skills: user.skills,
   }).save();
   createdUser.password = undefined;
   return createdUser;
 };
 
 const login = async (userCredentials) => {
-  const userRepository = mongoose.model('User', UserSchema);
+  const userRepository = User;
   const user = await userRepository
     .findOne({
       username: userCredentials.username,
@@ -40,4 +56,5 @@ module.exports = {
   getUsers,
   postUser,
   login,
+  getUsersBySkill
 };
