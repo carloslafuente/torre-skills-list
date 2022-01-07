@@ -1,6 +1,10 @@
-const { getAllUsers, createUser } = require('../services/user.service');
+const {
+  getAllUsers,
+  createUser,
+  getAllUsersBySkill,
+} = require('../services/user.service');
 
-async function apiGET(req, res) {
+async function getUsers(req, res) {
   try {
     const users = await getAllUsers();
     return res.status(200).send({ data: users });
@@ -9,7 +13,18 @@ async function apiGET(req, res) {
   }
 }
 
-async function apiPOST(req, res) {
+async function getUsersBySkill(req, res) {
+  try {
+    const skillId = req.params.skillId;
+    const users = await getAllUsersBySkill(skillId);
+    return res.status(200).send({ data: users });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ message: 'Internal Error Server' });
+  }
+}
+
+async function postUser(req, res) {
   try {
     const newUser = req.body;
     const user = await createUser(newUser);
@@ -20,6 +35,7 @@ async function apiPOST(req, res) {
 }
 
 module.exports = {
-  apiGET,
-  apiPOST,
+  getUsers,
+  postUser,
+  getUsersBySkill,
 };

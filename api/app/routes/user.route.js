@@ -1,8 +1,13 @@
-const { apiGET, apiPOST } = require('../controllers/user.controller');
+const {
+  getUsers,
+  postUser,
+  getUsersBySkill,
+} = require('../controllers/user.controller');
 
 const userRouter = (router) => {
-  router.get('/users', apiGET);
-  router.post('/users', apiPOST);
+  router.get('/users', getUsers);
+  router.post('/users', postUser);
+  router.get('/users/skill/:skillId', getUsersBySkill);
 };
 
 module.exports = userRouter;

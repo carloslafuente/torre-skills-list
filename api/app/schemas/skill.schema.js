@@ -7,4 +7,6 @@ const skillSchema = new Schema({
   description: { type: String, required: true },
 });
 
-module.exports = skillSchema;
+const Skill = Mongoose.model('Skill', skillSchema);
+
+module.exports = Skill;
